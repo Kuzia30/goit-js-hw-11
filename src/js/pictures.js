@@ -2,13 +2,18 @@ import { fetchPictures } from './API/pixabayApi'
 
 const formEl = document.querySelector('#search-form');
 const galleryWrap = document.querySelector('.gallery');
-
+const loadMore = document.querySelector('.load-more')
+let formData = ""
 
 formEl.addEventListener('submit', onSubmitForm);
+
 function onSubmitForm(evt) {
     evt.preventDefault();
-    const formData = evt.currentTarget.elements.searchQuery.value;
-    fetchPictures(formData).then(data => renderPictures(data.hits));
+    if (formData !== evt.currentTarget.elements.searchQuery.value) {
+        formData = evt.currentTarget.elements.searchQuery.value;
+        galleryWrap.innerHTML = "";
+        loadPictures(formData);
+    } 
 }
 
 function renderPictures(pictures) {
@@ -37,7 +42,12 @@ function renderPictures(pictures) {
 </div>`)
         .join('');
     
-    galleryWrap.innerHTML = murkup;
+    galleryWrap.insertAdjacentHTML('beforeend', murkup);
 }
  
+loadMore.addEventListener('click', () => loadPictures(formData));
+
+function loadPictures(formData) {
+    fetchPictures(formData).then(data => renderPictures(data.hits));
+}
 
