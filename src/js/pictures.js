@@ -1,9 +1,18 @@
-import { fetchPictures } from './API/pixabayApi'
+import { fetchPictures } from './API/pixabayApi';
+import { LoadMoreBtn } from './button';
 
 const formEl = document.querySelector('#search-form');
 const galleryWrap = document.querySelector('.gallery');
-const loadMore = document.querySelector('.load-more')
 let formData = ""
+
+const loadMoreBtn = new LoadMoreBtn({
+  selector: '.load-more',
+  className: 'is-hidden',
+  isHidden: true,
+  onClick() {
+    loadPictures(formData);
+  },
+});
 
 formEl.addEventListener('submit', onSubmitForm);
 
@@ -44,10 +53,16 @@ function renderPictures(pictures) {
     
     galleryWrap.insertAdjacentHTML('beforeend', murkup);
 }
- 
-loadMore.addEventListener('click', () => loadPictures(formData));
 
 function loadPictures(formData) {
-    fetchPictures(formData).then(data => renderPictures(data.hits));
+    fetchPictures(formData)
+        .then(pictures => {
+            loadMoreBtn.show();
+            renderPictures(pictures.hits);
+            console.log(pictures.currentPage);
+            if (!pictures.hasNextPage) {
+                loadMoreBtn.hide();
+            }
+        })
 }
 
