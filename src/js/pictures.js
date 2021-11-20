@@ -1,15 +1,18 @@
 import { fetchPictures } from './API/pixabayApi';
 import { LoadMoreBtn } from './button';
+import SimpleLightbox from 'simplelightbox';
+import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const formEl = document.querySelector('#search-form');
 const galleryWrap = document.querySelector('.gallery');
-let formData = ""
+let formData = '';
 
 const loadMoreBtn = new LoadMoreBtn({
   selector: '.load-more',
   className: 'is-hidden',
   isHidden: true,
   onClick() {
+    loadMoreBtn.hide();
     loadPictures(formData);
   },
 });
@@ -17,20 +20,30 @@ const loadMoreBtn = new LoadMoreBtn({
 formEl.addEventListener('submit', onSubmitForm);
 
 function onSubmitForm(evt) {
-    evt.preventDefault();
-    if (formData !== evt.currentTarget.elements.searchQuery.value) {
-        formData = evt.currentTarget.elements.searchQuery.value;
-        galleryWrap.innerHTML = "";
-        loadPictures(formData);
-    } 
+  evt.preventDefault();
+  if (formData !== evt.currentTarget.elements.searchQuery.value) {
+    formData = evt.currentTarget.elements.searchQuery.value;
+    galleryWrap.innerHTML = '';
+    loadPictures(formData);
+  }
 }
 
 function renderPictures(pictures) {
-    const murkup = pictures.map(({ webformatURL, largeImageURL, tags, likes, views, comments, downloads }) => `<div class="photo-card">
-  <a class="gallery__item" href="${largeImageURL}">
-  <img src="${webformatURL}" alt="${tags}" loading="lazy"/>
-</a>
-  <div class="info">
+  const murkup = pictures
+    .map(
+      ({
+        webformatURL,
+        largeImageURL,
+        tags,
+        likes,
+        views,
+        comments,
+        downloads,
+      }) => `<a class=" photo-card" href="${largeImageURL}">
+        <div class="gallery__item">
+          <img src="${webformatURL}" alt="${tags}" loading="lazy"/>
+          </div>
+          <div class="info">
     <p class="info-item">
       <b>Likes</b>
       ${likes}
@@ -48,21 +61,29 @@ function renderPictures(pictures) {
       ${downloads}
     </p>
   </div>
-</div>`)
-        .join('');
-    
-    galleryWrap.insertAdjacentHTML('beforeend', murkup);
+</a>`,
+    )
+    .join('');
+
+  galleryWrap.insertAdjacentHTML('beforeend', murkup);
+  const lightbox = new SimpleLightbox('.gallery a');
+  lightbox.on('show.simplelightbox', () => {
+    lightbox.options.captionDelay = '250';
+  });
+  lightbox.refresh();
+  loadMoreBtn.show();
 }
 
 function loadPictures(formData) {
-    fetchPictures(formData)
-        .then(pictures => {
-            loadMoreBtn.show();
-            renderPictures(pictures.hits);
-            console.log(pictures.currentPage);
-            if (!pictures.hasNextPage) {
-                loadMoreBtn.hide();
-            }
-        })
+  fetchPictures(formData).then(pictures => {
+    renderPictures(pictures.hits);
+    if (!pictures.hasNextPage) {
+      loadMoreBtn.hide();
+    }
+  });
 }
 
+galleryWrap.addEventListener('click', onPreventDefault);
+function onPreventDefault(event) {
+  event.preventDefault();
+}
