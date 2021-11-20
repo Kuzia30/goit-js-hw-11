@@ -24,7 +24,10 @@ function onSubmitForm(evt) {
   if (formData !== evt.currentTarget.elements.searchQuery.value) {
     formData = evt.currentTarget.elements.searchQuery.value;
     galleryWrap.innerHTML = '';
-    loadPictures(formData);
+    const dataTrim = formData.trim(' ');
+    if (dataTrim !== '') {
+       loadPictures(dataTrim);
+    }
   }
 }
 
