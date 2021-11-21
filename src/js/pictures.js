@@ -28,6 +28,10 @@ function onSubmitForm(evt) {
   evt.preventDefault();
   if (formData !== evt.currentTarget.elements.searchQuery.value) {
     formData = evt.currentTarget.elements.searchQuery.value;
+    page = 1;
+     if (formData === '') {
+       Notify.failure('Sorry, there are no images matching your search query. Please try again.');
+    };
     galleryWrap.innerHTML = '';
       loadMoreBtn.hide();
     const dataTrim = formData.trim(' ');
@@ -116,3 +120,12 @@ function notifyForEvent(data) {
     hasNextPage,
   };
 }
+
+// const { height: cardHeight } = document
+//   .querySelector('.gallery')
+//   .firstElementChild.getBoundingClientRect();
+
+// window.scrollBy({
+//   top: cardHeight * 2,
+//   behavior: 'smooth',
+// });
