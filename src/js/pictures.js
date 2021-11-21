@@ -90,7 +90,7 @@ async function loadPictures(formData) {
   });
 
   if (page !== 2) {
-     bihaviorScroll()
+    bihaviorScroll();
   }
   lightbox.refresh();
   loadMoreBtn.show();
@@ -124,13 +124,11 @@ function notifyForEvent(data) {
   };
 }
 
-
 function bihaviorScroll() {
-  const { height: cardHeight } = galleryWrap
-  .firstElementChild.getBoundingClientRect();
+  const { height: cardHeight } = galleryWrap.firstElementChild.getBoundingClientRect();
 
-window.scrollBy({
-  top: cardHeight * 2,
-  behavior: 'smooth',
-});
+  window.scrollBy({
+    top: cardHeight * 2,
+    behavior: 'smooth',
+  });
 }

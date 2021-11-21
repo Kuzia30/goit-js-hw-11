@@ -3,12 +3,7 @@ export class LoadMoreBtn {
   #className;
   #onClick;
 
-  constructor({
-    selector,
-    className = 'hidden',
-    isHidden = false,
-    onClick = () => null,
-  }) {
+  constructor({ selector, className = 'hidden', isHidden = false, onClick = () => null }) {
     this.#element = document.querySelector(selector);
     this.#className = className;
     this.#onClick = onClick;
