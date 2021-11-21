@@ -54,19 +54,19 @@ function renderPictures(pictures) {
           </div>
           <div class="info">
     <p class="info-item">
-      <b>Likes</b>
+      <b class="info-item-title">Likes</b>
       ${likes}
     </p>
     <p class="info-item">
-      <b>Views</b>
+      <b class="info-item-title">Views</b>
       ${views}
     </p>
     <p class="info-item">
-      <b>Comments</b>
+      <b class="info-item-title">Comments</b>
       ${comments}
     </p>
     <p class="info-item">
-      <b>Downloads</b>
+      <b class="info-item-title">Downloads</b>
       ${downloads}
     </p>
   </div>

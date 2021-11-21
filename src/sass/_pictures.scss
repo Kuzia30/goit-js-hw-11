@@ -81,6 +81,7 @@ textarea {
 
 .info {
   display: flex;
+  justify-content: space-around;
   height: 60px;
 }
 
@@ -90,6 +91,10 @@ textarea {
   line-height: 2;
   letter-spacing: 0.06em;
   text-align: center;
+}
+
+.info-item-title {
+  display: block;
 }
 
 .load-more {
